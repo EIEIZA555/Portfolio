@@ -12,27 +12,21 @@ function Projects() {
       <div className={styles.projectsContainer}>
         <ProjectCard
           src={viberr}
-          link="https://github.com/Ade-mir/company-landing-page-2"
-          h3="Viberr"
-          p="Streaming App"
+          link="https://github.com/EIEIZA555/proj-rag-v1"
+          h3="Project RAG-AI(Frontend)"
+          p="RAG App"
         />
         <ProjectCard
           src={freshBurger}
-          link="https://github.com/Ade-mir/company-landing-page-2"
-          h3="Fresh Burger"
-          p="Hamburger Restaurant"
+          link="https://github.com/EIEIZA555/Wongnai_Cloning"
+          h3="Wongnai Cloning"
+          p="Wongnai app"
         />
         <ProjectCard
           src={hipsster}
-          link="https://github.com/Ade-mir/company-landing-page-2"
-          h3="Hipsster"
-          p="Glasses Shop"
-        />
-        <ProjectCard
-          src={fitLift}
-          link="https://github.com/Ade-mir/company-landing-page-2"
-          h3="FitLift"
-          p="Fitness App"
+          link="https://github.com/EIEIZA555/work_webboard"
+          h3="Webboard"
+          p="Webboard webapp"
         />
       </div>
     </section>

@@ -75,22 +75,35 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+}
+
+.info a {
+  width: fit-content;
+  align-self: flex-start;    /* keep the button centered with text */
 }
 
 @media (width >= 800px) {
   .container {
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-evenly;
+    flex-direction: row-reverse;   /* keep avatar on the right */
+    align-items: center;           /* vertical centering */
+    justify-content: center;       /* center horizontally */
+    gap: 60px;                     /* spacing between text + avatar */
+  }
 
-    .hero {
-      max-width: 350px;
-      width: 350px;
-    }
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;       /* vertically center text block */
+    align-items: flex-start;       /* keep text left-aligned */
+    max-width: 450px;              /* nice readable width */
+    text-align: left;
   }
 }
 
-@media (width >= 1400px) {
+
+
+@media (width >=1400px) {
   .container {
     .hero {
       max-width: 400px;
