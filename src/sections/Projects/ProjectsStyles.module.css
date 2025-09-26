@@ -8,6 +8,8 @@
     align-self: center;
     background-color: var(--project-card-bg);
     border-radius: 20px;
+    height: 180px; /* Choose a fixed height that works for all images */
+    object-fit: contain; /* Shrinks the image to fit in the new height */
   }
 
   a {
@@ -35,5 +37,6 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     padding: 0 30px;
+    align-items: center;
   }
 }
