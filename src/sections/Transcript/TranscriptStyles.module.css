@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.transcriptContainer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.transcript-card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 24px;
+  max-width: 600px;
+}
+
+.transcript-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+/* Add to TranscriptStyles.module.css if you want */
+.transcript-pdf {
+  width: 100%;
+  height: 600px;
+  border-radius: 10px;
+  border: none;
+}

@@ -11,11 +11,25 @@
 [data-theme='dark'] {
   --background-color: #222;
   --btn-color: #fff;
-  --btn-text-color: #222;
-  --project-card-bg: #fff;
+  --btn-text-color: #222; 
+  --project-card-bg: #333;
   --text-color: #fff;
   --form-text-color: #fff;
   --footer-text-color: #bbb;
+}
+
+/* Ensure this is the most specific selector to force the dark text */
+[data-theme='dark'] .container :global(.description-popup) {
+    /* * In dark mode, --btn-color is white (#fff),
+     * and the popup's text color is also set to white. 
+     * We must force the text color to be dark.
+     */
+    color: #222222 !important; /* A dark color to stand out on the white background */
+}
+
+/* Optional: Make sure the text inside the popup also inherits the dark color */
+[data-theme='dark'] .container :global(.description-popup .description) {
+    color: #222222 !important;
 }
 
 body {
@@ -91,6 +105,11 @@ p {
 
   .sectionTitle {
     margin-bottom: 60px;
+  }
+  [data-theme='dark'] .container :global(.achievement-card) {
+      /* Use the variable you already defined for dark mode background */
+      background-color: var(--background-color); 
+      color: var(--text-color); 
   }
 
   @media (width >= 1400px) {

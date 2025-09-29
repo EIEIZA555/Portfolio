@@ -1,0 +1,144 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.achievementContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.container :global(.achievement-card) {
+  background-color: var(--project-card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.container :global(.achievement-card:hover) {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.container :global(.image-container) {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.container :global(.image-container img) {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform 300ms ease-in-out;
+}
+
+.container :global(.image-container:hover img) {
+  transform: scale(1.05);
+}
+
+.container :global(.overlay) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  padding: 15px;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.container :global(.image-container:hover .overlay) {
+  opacity: 1;
+}
+
+.container :global(.overlay span) {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.container :global(.achievement-card h3) {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.container :global(.achievement-card .organization) {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--btn-color);
+  margin-bottom: 5px;
+}
+
+.container :global(.achievement-card .date) {
+  font-size: 14px;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-bottom: 15px;
+}
+
+.container :global(.description-popup) {
+  background: var(--btn-text--color);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
+  animation: slideDown 300ms ease-in-out;
+}
+
+/*
+ * This block forces the text color inside the popup to be dark
+ * when the parent 'data-theme="dark"' attribute is active,
+ * overriding the 'color: white;' rule you have in the component.
+ */
+
+:global([data-theme='dark']) .container :global(.description-popup) {
+    /* Use a dark color */
+    color: #222222 !important; 
+}
+
+:global([data-theme='dark']) .container :global(.description-popup .description) {
+    /* Ensure the nested description text is also dark */
+    color: #fff !important;
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container :global(.description-popup .description) {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (width >= 800px) {
+  .achievementContainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .container :global(.achievement-card) {
+    max-width: 350px;
+  }
+}
