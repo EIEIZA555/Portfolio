@@ -6,6 +6,14 @@
   --text-color: #222;
   --form-text-color: #555;
   --footer-text-color: #888;
+
+  /* Light-mode aurora colors (softer on white) */
+  --aurora-1: rgba(56, 193, 212, 0.22);   /* cyan */
+  --aurora-2: rgba(142, 88, 240, 0.18);   /* purple */
+  --aurora-3: rgba(34, 197, 94, 0.14);    /* green */
+
+  /* star speckle color */
+  --stars-color: rgba(255,255,255,0.18);
 }
 
 [data-theme='dark'] {
@@ -16,15 +24,18 @@
   --text-color: #fff;
   --form-text-color: #fff;
   --footer-text-color: #bbb;
+
+  /* stronger aurora on dark */
+  --aurora-1: rgba(34, 211, 238, 0.22);
+  --aurora-2: rgba(124, 58, 237, 0.20);
+  --aurora-3: rgba(16, 185, 129, 0.16);
+
+  --stars-color: rgba(255,255,255,0.06);
 }
 
 /* Ensure this is the most specific selector to force the dark text */
 [data-theme='dark'] .container :global(.description-popup) {
-    /* * In dark mode, --btn-color is white (#fff),
-     * and the popup's text color is also set to white. 
-     * We must force the text color to be dark.
-     */
-    color: #222222 !important; /* A dark color to stand out on the white background */
+    color: #222222 !important;
 }
 
 /* Optional: Make sure the text inside the popup also inherits the dark color */
@@ -37,6 +48,9 @@ body {
   display: flex;
   justify-content: center;
   margin: 0 auto 60px;
+  position: relative;   /* for pseudo-elements */
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #root {
@@ -106,8 +120,8 @@ p {
   .sectionTitle {
     margin-bottom: 60px;
   }
+
   [data-theme='dark'] .container :global(.achievement-card) {
-      /* Use the variable you already defined for dark mode background */
       background-color: var(--background-color); 
       color: var(--text-color); 
   }
@@ -123,5 +137,163 @@ p {
     .sectionTitle {
       margin-bottom: 75px;
     }
+  }
+}
+
+/* ------------------------
+   Improved Aurora + Stars
+   ------------------------ */
+
+/* Light-mode: soft pastel blobs that sit gently on white.
+   Dark-mode: vivid, layered aurora with subtle movement and contrast. */
+
+/* base aurora variables are defined earlier in :root / [data-theme='dark'] */
+
+/* two primary aurora layers (fixed, behind content) */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -2; /* behind app content */
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 300ms ease;
+}
+
+/* large gentle blob (top-left) */
+body::before {
+  left: -20vw;
+  top: -35vh;
+  width: 110vw;
+  height: 85vh;
+  background:
+    radial-gradient(30% 50% at 15% 30%, rgba(255,255,255,0.0) 0%, transparent 30%),
+    radial-gradient(40% 60% at 25% 35%, var(--aurora-2), transparent 45%),
+    radial-gradient(55% 45% at 80% 70%, var(--aurora-1), transparent 45%);
+  filter: blur(56px) saturate(120%);
+  opacity: 0.86;
+  animation: auroraDriftA 20s ease-in-out infinite;
+  mix-blend-mode: multiply; /* default for light */
+}
+
+/* secondary ribbon/blob (bottom-right) */
+body::after {
+  right: -20vw;
+  bottom: -35vh;
+  width: 110vw;
+  height: 85vh;
+  background:
+    radial-gradient(40% 55% at 70% 30%, var(--aurora-3), transparent 40%),
+    radial-gradient(50% 40% at 30% 80%, var(--aurora-1), transparent 40%),
+    linear-gradient(120deg, transparent 10%, rgba(255,255,255,0.02) 40%, transparent 70%);
+  filter: blur(56px) saturate(120%);
+  opacity: 0.92;
+  animation: auroraDriftB 24s ease-in-out infinite;
+  mix-blend-mode: multiply; /* default for light */
+}
+
+/* Add a subtle moving ribbon (using a pseudo-element on html) for extra motion on dark theme */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* between stars and aurora */
+  pointer-events: none;
+  background:
+    linear-gradient(120deg,
+      rgba(255,255,255,0.00) 0%,
+      rgba(255,255,255,0.00) 30%,
+      rgba(255,255,255,0.03) 50%,
+      rgba(255,255,255,0.00) 70%,
+      rgba(255,255,255,0.00) 100%);
+  transform: translate3d(0,0,0);
+  filter: blur(18px) brightness(0.98);
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  animation: ribbonShift 26s linear infinite;
+}
+
+/* Stars speckle: lighter in light mode, more visible in dark */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3; /* behind aurora layers */
+  pointer-events: none;
+  background-image:
+    radial-gradient(var(--stars-color) 1px, transparent 1px),
+    radial-gradient(var(--stars-color) 1px, transparent 1px);
+  background-size: 240px 240px, 120px 120px;
+  background-position: 0 0, 60px 80px;
+  opacity: 0.55;
+  filter: blur(0.6px);
+  mix-blend-mode: screen;
+}
+
+/* Theme-specific behavior:
+   - Light mode: multiply blend, lower blur, softer opacity
+   - Dark mode: screen blend, stronger saturation/blur and slightly faster motion
+*/
+html:not([data-theme='dark']) body::before,
+html:not([data-theme='dark']) body::after {
+  mix-blend-mode: multiply;
+  filter: blur(50px) saturate(115%);
+  opacity: 0.85;
+}
+
+[data-theme='dark'] body::before,
+[data-theme='dark'] body::after {
+  mix-blend-mode: screen;
+  filter: blur(80px) saturate(150%);
+  opacity: 1;
+}
+
+/* Dark-mode ribbon stronger and more colorful */
+[data-theme='dark'] html::before {
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  filter: blur(22px) saturate(140%);
+}
+
+/* stars visibility tweak for themes */
+html:not([data-theme='dark']) html::after,
+html:not([data-theme='dark']) ::after {
+  /* keep stars very subtle on white */
+  --stars-opacity: 0.28;
+}
+[data-theme='dark'] html::after,
+[data-theme='dark'] ::after {
+  /* slightly more visible on dark */
+  --stars-opacity: 0.9;
+  background-size: 180px 180px, 100px 100px;
+}
+
+/* Keyframes for drifting blobs and ribbons */
+@keyframes auroraDriftA {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  35%  { transform: translate3d(4vw, 3vh, 0) scale(1.02); }
+  70%  { transform: translate3d(-3vw, -2vh, 0) scale(1.01); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+@keyframes auroraDriftB {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  30%  { transform: translate3d(-5vw, 2vh, 0) scale(1.03); }
+  65%  { transform: translate3d(3vw, -3vh, 0) scale(1.01); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+@keyframes ribbonShift {
+  0%   { transform: translate3d(-6vw, 0, 0) rotate(-3deg); }
+  50%  { transform: translate3d(6vw, 0, 0) rotate(3deg); }
+  100% { transform: translate3d(-6vw, 0, 0) rotate(-3deg); }
+}
+
+/* Respect user motion preference */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  html::before,
+  html::after {
+    animation: none !important;
+    filter: blur(50px) !important;
   }
 }
